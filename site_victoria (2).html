@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Виктория ♡</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&family=Cormorant+Garamond:wght@600&display=swap');
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;color:#694d5c;font-family:Comfortaa,sans-serif;background:radial-gradient(circle at 15% 10%,#ffe8f0,transparent 30%),radial-gradient(circle at 85% 90%,#fff0e5,transparent 30%),#fff9fb;min-height:100vh;display:flex;flex-direction:column}
+.wrap{width:min(1150px,92%);margin:auto;display:flex;flex-direction:column;flex:1}
+header{height:90px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0dce4}
+.logo{font:600 28px "Cormorant Garamond",serif}
+.logo span{color:#c97898}
+nav{display:flex;gap:6px}
+nav button{border:0;background:transparent;color:#a78795;padding:12px 16px;border-radius:22px;font:600 13px Comfortaa;cursor:pointer;transition:.2s}
+nav button:hover,nav button.active{background:white;color:#c97898;box-shadow:0 8px 25px #b66d8a18}
+
+.page{display:none;flex:1;padding:45px 0;align-items:center;justify-content:center}
+.page.active{display:flex;flex-direction:column;animation:in .45s ease}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:50px;align-items:center;width:100%}
+.kicker{text-transform:uppercase;letter-spacing:3px;font-size:11px;color:#c97898}
+h1{font:600 65px/.95 "Cormorant Garamond",serif;margin:18px 0;color:#704e60}
+.hero p{max-width:530px;line-height:1.8;color:#987685}
+.btn{margin-top:20px;border:0;border-radius:30px;padding:15px 25px;background:linear-gradient(135deg,#d487a4,#b96e90);color:white;font:600 13px Comfortaa;cursor:pointer;box-shadow:0 14px 30px #b66d8a30}
+
+.mainphoto{height:460px;border-radius:38px;background:#f9e1ea;overflow:hidden;box-shadow:0 25px 70px #7d4c641f;position:relative}
+.mainphoto img{width:100%;height:100%;object-fit:cover;display:none}
+.placeholder{height:100%;display:grid;place-items:center;text-align:center;color:#b991a2}
+.placeholder b{font-size:55px;display:block}
+.upload-btn{position:absolute;bottom:15px;right:15px;background:white;border:0;padding:8px 14px;border-radius:20px;font:600 11px Comfortaa;color:#a66b82;cursor:pointer;box-shadow:0 4px 15px rgba(0,0,0,0.1);opacity:0;transition:.2s}
+.mainphoto:hover .upload-btn{opacity:1}
+.mainphoto.not-loaded .upload-btn{opacity:1}
+
+.title{text-align:center;margin-bottom:38px;width:100%}
+.title h2{font:600 52px "Cormorant Garamond",serif;margin:8px}
+.title p{font-size:13px;color:#a78795}
+
+.gallery-top{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:38px}
+.add-gallery-btn{border:0;background:linear-gradient(135deg,#d487a4,#b96e90);color:white;padding:10px 20px;border-radius:20px;font:600 12px Comfortaa;cursor:pointer;box-shadow:0 8px 20px #b66d8a30}
+
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:100%}
+.card{background:white;padding:9px;border-radius:24px;box-shadow:0 14px 40px #78465f17;position:relative;transition:.25s}
+.card:hover{transform:translateY(-6px)}
+.card img{width:100%;height:280px;object-fit:cover;border-radius:17px;display:block;cursor:pointer}
+.caption{padding:12px 7px 8px;font-size:12px;color:#a07d8d;outline:0;border-bottom:1px dashed transparent;transition:.2s}
+.caption:focus{border-bottom:1px dashed #c97898;background:#fff5f8;border-radius:6px}
+.caption:hover{color:#704e60}
+.delete-photo-btn{position:absolute;top:18px;right:18px;background:rgba(255, 255, 255, 0.85);border:0;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:bold;color:#a66b82;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,0.15);transition:.2s}
+.delete-photo-btn:hover{background:white;color:#d9534f;transform:scale(1.1)}
+.empty{grid-column:1/-1;text-align:center;padding:70px;border:2px dashed #e9ccd8;border-radius:28px;color:#b58d9e}
+
+/* МОЁ СОЛНЫШКО */
+.letter-section{width:min(850px,100%);margin:auto;display:flex;flex-direction:column;gap:40px}
+.letter-section h2{text-align:center;font:600 50px "Cormorant Garamond",serif;margin:0}
+
+.string-wall{position:relative;padding-top:25px;width:100%}
+.rope{position:absolute;top:5px;left:0;width:100%;height:2px;background:#d4b3c2;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.hanging-photos{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hanging-card{background:white;padding:7px 7px 22px 7px;border-radius:6px;box-shadow:0 10px 25px rgba(120, 70, 95, 0.12);width:150px;position:relative;cursor:pointer;transition:.3s}
+.hanging-card:hover{transform:translateY(5px) scale(1.03)}
+.hanging-card::before{content:'';position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:8px;height:20px;background:#b58d9e;border-radius:4px;box-shadow:0 2px 5px rgba(0,0,0,0.2)}
+.hanging-card img{width:100%;height:120px;object-fit:cover;border-radius:4px;display:none}
+.hanging-placeholder{height:120px;background:#fdf2f5;border-radius:4px;display:grid;place-items:center;font-size:11px;color:#b991a2;text-align:center;padding:5px}
+
+.paper-sheet{background:#fffdfc;padding:50px 60px;border:1px solid #f0e0d9;border-radius:12px;box-shadow:0 25px 70px #7d4c641f;position:relative}
+.text{min-height:180px;outline:0;white-space:pre-wrap;font:18px/2 "Cormorant Garamond",serif;border-bottom:1px dashed #f0e0d9;padding-bottom:15px;margin-bottom:15px}
+.text:empty:before{content:"✎ Напиши здесь своё письмо… (текст сохраняется сам)";color:#c6aab6}
+.sign{text-align:right;font:26px "Cormorant Garamond",serif;color:#a66b82;margin-top:10px}
+
+/* СЕКРЕТИК / ПРЕДЛОЖЕНИЕ */
+.secret{text-align:center;margin:0 auto;padding:45px;max-width:650px;width:100%;background:#ffffffc9;border-radius:30px;box-shadow:0 25px 70px #7d4c641f}
+.secret button.reveal-btn{border:1px solid #e6c3d0;background:white;color:#a66b82;border-radius:30px;padding:13px 22px;font:600 13px Comfortaa;cursor:pointer}
+.proposal-buttons{display:flex;gap:20px;justify-content:center;align-items:center;margin-top:25px;position:relative;min-height:60px}
+.btn-yes{background:linear-gradient(135deg,#d487a4,#b96e90);color:white;border:0;border-radius:30px;padding:14px 35px;font:600 14px Comfortaa;cursor:pointer;box-shadow:0 10px 25px #b66d8a30;transition:.2s}
+.btn-yes:hover{transform:scale(1.05)}
+.btn-no{background:white;color:#a78795;border:1px solid #e6c3d0;border-radius:30px;padding:14px 35px;font:600 14px Comfortaa;cursor:pointer;transition:.1s}
+.btn-no.moving{position:fixed;z-index:9999;transition:all 0.1s ease-out}
+
+.msg{display:none;font:26px/1.6 "Cormorant Garamond",serif;color:#9f637b;margin-top:10px}
+.msg.show{display:block}
+
+/* Аккуратная карточка для фото в секретике */
+.secret-photo-card {
+    background: white;
+    padding: 10px 10px 20px 10px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(120, 70, 95, 0.12);
+    width: 220px;
+    margin: 0 auto 25px auto;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+}
+.secret-photo-card:hover {
+    transform: translateY(-4px);
+}
+.secret-photo-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: none;
+}
+.secret-placeholder {
+    height: 160px;
+    background: #fdf2f5;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    color: #b991a2;
+    text-align: center;
+    padding: 10px;
+    font-family: Comfortaa, sans-serif;
+}
+.secret-photo-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: #8c6375;
+    margin-top: 12px;
+}
+
+.modal{display:none;position:fixed;inset:0;background:#432b35aa;backdrop-filter:blur(7px);align-items:center;justify-content:center;z-index:9}
+.modal.show{display:flex}
+.modal img{max-width:88%;max-height:85%;border-radius:22px}
+.close{position:fixed;right:25px;top:20px;border:0;border-radius:50%;width:45px;height:45px;background:white;font-size:22px;cursor:pointer}
+
+/* ЭКРАН БЛОКИРОВКИ / АВТОРИЗАЦИИ */
+#lockScreen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 15% 10%,#ffe8f0,transparent 30%), radial-gradient(circle at 85% 90%,#fff0e5,transparent 30%), #fff9fb;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.lock-card {
+    background: white;
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 25px 70px #7d4c6426;
+    width: min(420px, 100%);
+    text-align: center;
+}
+.lock-card h2 {
+    font: 600 36px "Cormorant Garamond", serif;
+    color: #704e60;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.lock-card p {
+    font-size: 12px;
+    color: #a78795;
+    margin-bottom: 25px;
+}
+.lock-input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+.lock-input-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #987685;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.lock-input-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #f0dce4;
+    border-radius: 16px;
+    font-family: Comfortaa, sans-serif;
+    font-size: 13px;
+    color: #694d5c;
+    background: #fff9fb;
+    outline: none;
+    transition: .2s;
+}
+.lock-input-group input:focus {
+    border-color: #c97898;
+    background: white;
+    box-shadow: 0 0 0 4px #b66d8a15;
+}
+.lock-error {
+    color: #d9534f;
+    font-size: 11px;
+    margin-top: 10px;
+    display: none;
+}
+.lock-btn {
+    width: 100%;
+    margin-top: 10px;
+    border: 0;
+    border-radius: 25px;
+    padding: 14px;
+    background: linear-gradient(135deg,#d487a4,#b96e90);
+    color: white;
+    font: 600 13px Comfortaa;
+    cursor: pointer;
+    box-shadow: 0 10px 25px #b66d8a30;
+    transition: .2s;
+}
+.lock-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Адаптив */
+@media(max-width:1024px){
+    .hero{grid-template-columns:1fr;gap:40px;text-align:center;}
+    .hero p{margin:0 auto;}
+    .btn{margin:20px auto 0;}
+    .mainphoto{max-width:450px;margin:0 auto;}
+    .hanging-photos{justify-content:center;}
+}
+@media(max-width:800px){
+    .wrap{width:calc(100% - 24px);}
+    header{height:auto;padding:15px 0;gap:12px;flex-wrap:wrap;justify-content:center;}
+    nav{justify-content:center;flex-wrap:wrap;gap:4px;}
+    nav button{padding:10px 14px;font-size:12px;}
+    h1{font-size:45px;}
+    .gallery{grid-template-columns:repeat(2,1fr);}
+    .paper-sheet{padding:35px 25px;}
+    .hanging-card{width:130px;}
+}
+@media(max-width:520px){
+    .page{align-items:flex-start;justify-content:flex-start;}
+    .gallery{grid-template-columns:1fr;}
+    h1{font-size:36px;}
+    .title h2{font-size:38px;}
+    .mainphoto{height:320px;}
+    .card img{height:240px;}
+    .text{font-size:16px;}
+    .hanging-card{width:45%;}
+}
+</style>
+</head>
+<body>
+
+<!-- ЭКРАН БЛОКИРОВКИ -->
+<div id="lockScreen">
+  <div class="lock-card">
+    <h2>Вход ♡</h2>
+    <p>Пожалуйста, представьтесь для доступа к сайту</p>
+    
+    <div class="lock-input-group">
+      <label>Имя</label>
+      <input type="text" id="lockName" placeholder="Ваше имя">
+    </div>
+
+    <div class="lock-input-group">
+      <label>Статус в семейной иерархии</label>
+      <input type="text" id="lockStatus" placeholder="Например: жена, любовь всей жизни...">
+    </div>
+
+    <div class="lock-input-group">
+      <label>Пароль</label>
+      <input type="password" id="lockPassword" placeholder="ДДММГГГГ (без точек)">
+    </div>
+
+    <div id="lockError" class="lock-error">Неверные данные или пароль. Попробуйте еще раз!</div>
+    
+    <button class="lock-btn" onclick="checkLock()">Войти ♡</button>
+  </div>
+</div>
+
+<div class="wrap">
+<header><div class="logo">Виктория <span>♡</span></div><nav>
+<button class="active" onclick="page('home',this)">Главная</button>
+<button onclick="page('photos',this)">Наши фото</button>
+<button onclick="page('letter',this)">Моё солнышко</button>
+<button onclick="page('secret',this)">Секретик</button>
+</nav></header>
+
+<!-- ГЛАВНАЯ -->
+<section id="home" class="page active"><div class="hero">
+<div><div class="kicker">30.08.2026 • наш особенный день</div><h1>Миралюслав<br>и Виктория ♡</h1><p>Я сделал это маленькое место специально для тебя. Здесь будут наши фотографии, воспоминания и слова, которые хочется сохранить.</p><button class="btn" onclick="page('letter',document.querySelectorAll('nav button')[2])">Открыть письмо →</button></div>
+<div class="mainphoto not-loaded" id="mainPhotoBox">
+  <img id="mainImg" onload="photoLoaded(this)" alt="">
+  <div class="placeholder"><div><b>♡</b>Главное фото<br><small>нажми кнопку ниже</small></div></div>
+  <button class="upload-btn" onclick="document.getElementById('mainFileInput').click()">Выбрать фото</button>
+  <input type="file" id="mainFileInput" accept="image/*" style="display:none" onchange="uploadMainPhoto(event)">
+</div>
+</div></section>
+
+<!-- НАШИ ФОТО -->
+<section id="photos" class="page">
+  <div class="gallery-top">
+    <div>
+      <div class="kicker">только наши моменты</div>
+      <h2>Наши фото</h2>
+    </div>
+    <button class="add-gallery-btn" onclick="document.getElementById('galleryFileInput').click()">+ Добавить фото</button>
+    <input type="file" id="galleryFileInput" accept="image/*" style="display:none" onchange="addGalleryPhoto(event)">
+  </div>
+  <div id="gallery" class="gallery"></div>
+</section>
+
+<!-- МОЁ СОЛНЫШКО -->
+<section id="letter" class="page">
+  <div class="letter-section">
+    <h2>Моё солнышко ♡</h2>
+    
+    <div class="string-wall">
+      <div class="rope"></div>
+      <div class="hanging-photos" id="hangingGallery"></div>
+    </div>
+
+    <div class="paper-sheet">
+      <div class="text" contenteditable="true" id="letterText" oninput="saveLetter()"></div>
+      <div class="sign">От Миралюслава — с любовью ♡</div>
+    </div>
+  </div>
+</section>
+
+<!-- СЕКРЕТИК / ПРЕДЛОЖЕНИЕ -->
+<section id="secret" class="page">
+  <div class="title">
+    <div class="kicker">тсс...</div>
+    <h2>Ещё кое-что</h2>
+    <p>Ты действительно нашла эту вкладку.</p>
+  </div>
+  <div class="secret">
+    <div id="secretPromptBox">
+      🔐<br><br>
+      <button class="reveal-btn" onclick="revealProposal()">Нажми, тут секретик ♡</button>
+    </div>
+
+    <div id="proposalBox" style="display:none;">
+      <h2 style="font-family:'Cormorant Garamond',serif; font-size:40px; color:#704e60; margin-top:0;">Выйдешь за меня? ♡</h2>
+      <div class="proposal-buttons">
+        <button class="btn-yes" onclick="sayYes()">Да! ♡</button>
+        <button class="btn-no" id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">Нет</button>
+      </div>
+    </div>
+
+    <div id="msg" class="msg">
+      <div class="secret-photo-card" onclick="document.getElementById('secretFileInput').click()">
+        <img id="secretImg" alt="">
+        <div id="secretPlaceholder" class="secret-placeholder">♡ Нажми, чтобы добавить фото</div>
+        <div class="secret-photo-caption">Наш момент ♡</div>
+      </div>
+      <input type="file" id="secretFileInput" accept="image/*" style="display:none" onchange="uploadSecretPhoto(event)">
+      
+      Спасибо, что стала моей женой, и я так рад, что именно ты — тот человек, которого я люблю ♡
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div id="modal" class="modal" onclick="closeModal()"><button class="close">×</button><img id="modalImg"></div>
+
+<script>
+// Проверка авторизации при загрузке
+if(localStorage.getItem('vic_unlocked') === 'true') {
+    document.getElementById('lockScreen').style.display = 'none';
+}
+
+function checkLock() {
+    const name = document.getElementById('lockName').value.trim();
+    const status = document.getElementById('lockStatus').value.trim();
+    const password = document.getElementById('lockPassword').value.trim();
+    const errorEl = document.getElementById('lockError');
+
+    // Проверяем пароль (23 апреля 2008 без точек -> 23042008)
+    // Имя и статус могут быть любыми непустыми, либо вы можете задать строгие проверки при желании
+    if(password === "23042008" && name !== "" && status !== "") {
+        localStorage.setItem('vic_unlocked', 'true');
+        localStorage.setItem('vic_user_name', name);
+        localStorage.setItem('vic_user_status', status);
+        
+        // Плавное скрытие экрана блокировки
+        const lock = document.getElementById('lockScreen');
+        lock.style.transition = 'opacity 0.4s ease';
+        lock.style.opacity = '0';
+        setTimeout(() => {
+            lock.style.display = 'none';
+        }, 400);
+    } else {
+        errorEl.style.display = 'block';
+    }
+}
+
+// Сверхмощное сжатие, чтобы фото гарантированно помещались в память сайта
+function compressImage(file, callback) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            const maxDim = 450; // Оптимальный размер для памяти браузера
+            
+            if (width > height) {
+                if (width > maxDim) {
+                    height *= maxDim / width;
+                    width = maxDim;
+                }
+            } else {
+                if (height > maxDim) {
+                    width *= maxDim / height;
+                    height = maxDim;
+                }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            callback(canvas.toDataURL('image/jpeg', 0.5)); // Качество 50% — файл весит копейки, а качество отличное
+        }
+        img.src = e.target.result;
+    }
+    reader.readAsDataURL(file);
+}
+
+// Галерея
+let photos = JSON.parse(localStorage.getItem('vic_photos')) || [];
+
+// 5 фотографий на веревочке
+let letterPhotos = JSON.parse(localStorage.getItem('vic_letter_photos')) || [null, null, null, null, null];
+
+// Текст письма
+document.getElementById('letterText').innerText = localStorage.getItem('vic_letter') || "";
+function saveLetter() {
+    localStorage.setItem('vic_letter', document.getElementById('letterText').innerText);
+}
+
+// Главное фото
+let savedMain = localStorage.getItem('vic_main');
+if(savedMain) { 
+    document.getElementById('mainImg').src = savedMain; 
+}
+
+function photoLoaded(img) {
+    img.style.display = 'block';
+    img.nextElementSibling.style.display = 'none';
+    document.getElementById('mainPhotoBox').classList.remove('not-loaded');
+}
+
+function uploadMainPhoto(e) {
+    const file = e.target.files[0];
+    if(file) {
+        compressImage(file, function(result) {
+            try {
+                localStorage.setItem('vic_main', result);
+                document.getElementById('mainImg').src = result;
+            } catch(err) {
+                alert("Память сайта заполнена. Удалите пару старых фото из галереи, чтобы освободить место.");
+            }
+        });
+    }
+}
+
+// Секретное фото после "Да"
+let savedSecretPhoto = localStorage.getItem('vic_secret_photo');
+if(savedSecretPhoto) {
+    const sImg = document.getElementById('secretImg');
+    sImg.src = savedSecretPhoto;
+    sImg.style.display = 'block';
+    sImg.onclick = (e) => { e.stopPropagation(); openModal(savedSecretPhoto); };
+    document.getElementById('secretPlaceholder').style.display = 'none';
+}
+
+function uploadSecretPhoto(e) {
+    const file = e.target.files[0];
+    if(file) {
+        compressImage(file, function(result) {
+            try {
+                localStorage.setItem('vic_secret_photo', result);
+                const sImg = document.getElementById('secretImg');
+                sImg.src = result;
+                sImg.style.display = 'block';
+                sImg.onclick = (e) => { e.stopPropagation(); openModal(result); };
+                document.getElementById('secretPlaceholder').style.display = 'none';
+            } catch(err) {
+                alert("Память сайта заполнена. Удалите пару старых фото из галереи, чтобы освободить место.");
+            }
+        });
+    }
+}
+
+// Рендер 5 фото на веревочке
+function renderHangingPhotos() {
+    const container = document.getElementById('hangingGallery');
+    container.innerHTML = "";
+    
+    letterPhotos.forEach((photoSrc, index) => {
+        const card = document.createElement('div');
+        card.className = "hanging-card";
+        
+        if (photoSrc) {
+            card.innerHTML = `
+                <img src="${photoSrc}" style="display:block;" onclick="openModal('${photoSrc}')" alt="">
+                <div class="hanging-placeholder" style="display:none"></div>
+            `;
+        } else {
+            card.innerHTML = `
+                <img src="" alt="">
+                <div class="hanging-placeholder">♡ Фото ${index + 1}</div>
+            `;
+        }
+        
+        card.onclick = () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    compressImage(file, function(result) {
+                        try {
+                            letterPhotos[index] = result;
+                            localStorage.setItem('vic_letter_photos', JSON.stringify(letterPhotos));
+                            renderHangingPhotos();
+                        } catch(err) {
+                            alert("Память сайта заполнена. Удалите пару старых фото из галереи, чтобы освободить место.");
+                        }
+                    });
+                }
+            };
+            input.click();
+        };
+        
+        container.appendChild(card);
+    });
+}
+
+// Добавление фото в общую галерею
+function addGalleryPhoto(e) {
+    const file = e.target.files[0];
+    if(file) {
+        compressImage(file, function(result) {
+            const caption = prompt("Введите подпись для этой фотографии:", "Наш момент ♡") || "Наш момент ♡";
+            try {
+                photos.push({file: result, caption: caption});
+                localStorage.setItem('vic_photos', JSON.stringify(photos));
+                renderGallery();
+            } catch(err) {
+                alert("Память сайта заполнена. Удалите пару старых фото из галереи, чтобы освободить место.");
+            }
+        });
+    }
+}
+
+function updateCaption(index, newText) {
+    photos[index].caption = newText;
+    localStorage.setItem('vic_photos', JSON.stringify(photos));
+}
+
+function deletePhoto(index) {
+    if(confirm("Удалить это фото?")) {
+        photos.splice(index, 1);
+        localStorage.setItem('vic_photos', JSON.stringify(photos));
+        renderGallery();
+    }
+}
+
+function renderGallery(){
+    const g = document.getElementById("gallery");
+    g.innerHTML = "";
+    if(!photos.length){
+        g.innerHTML = '<div class="empty">📷<br><br>Пока здесь пусто… Нажми кнопку "+ Добавить фото" выше!</div>';
+        return;
+    }
+    photos.forEach((p, index) => {
+        const c = document.createElement("div");
+        c.className = "card";
+        c.innerHTML = `
+            <button class="delete-photo-btn" onclick="deletePhoto(${index})" title="Удалить фото">×</button>
+            <img src="${p.file}" alt="" onclick="openModal('${p.file}')">
+            <div class="caption" contenteditable="true" onblur="updateCaption(${index}, this.innerText)" title="Нажми, чтобы изменить подпись">${p.caption}</div>
+        `;
+        g.appendChild(c);
+    });
+}
+
+// Секретик / Предложение
+function revealProposal() {
+    document.getElementById('secretPromptBox').style.display = 'none';
+    document.getElementById('proposalBox').style.display = 'block';
+}
+
+function moveNoButton() {
+    const btn = document.getElementById('noBtn');
+    btn.classList.add('moving');
+    
+    const padding = 80;
+    const maxX = window.innerWidth - btn.offsetWidth - padding;
+    const maxY = window.innerHeight - btn.offsetHeight - padding;
+    
+    const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+    const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+    
+    btn.style.left = randomX + 'px';
+    btn.style.top = randomY + 'px';
+}
+
+function sayYes() {
+    document.getElementById('proposalBox').style.display = 'none';
+    document.getElementById('msg').classList.add('show');
+}
+
+function page(id,b){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");scrollTo(0,0)}
+function openModal(s){document.getElementById("modalImg").src=s;document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+
+renderGallery();
+renderHangingPhotos();
+</script>
+</body>
+</html>
